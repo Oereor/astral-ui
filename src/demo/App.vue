@@ -565,7 +565,10 @@ function confirmModal() {
                                                 <HSwitch
                                                     v-model="notify"
                                                     label="接收消息通知"
-                                                /><HSwitch v-model="sound" label="界面音效" />
+                                                /><HSwitch v-model="sound" label="界面音效"
+                                                    ><template #icon
+                                                        ><HIcon name="star" :size="18" /></template
+                                                ></HSwitch>
                                             </div>
                                             <div class="choice-row">
                                                 <HCheckbox v-model="check">自动保存</HCheckbox

@@ -3,9 +3,11 @@ defineProps<{ label: string; disabled?: boolean }>()
 const model = defineModel<boolean>({ default: false })
 </script>
 <template>
-    <label class="h-switch-label"
-        ><span>{{ label }}</span
-        ><button
+    <label class="h-switch-label">
+        <span class="h-switch-label__content"
+            ><slot name="icon" /><span>{{ label }}</span></span
+        >
+        <button
             type="button"
             class="h-switch"
             role="switch"
@@ -15,8 +17,9 @@ const model = defineModel<boolean>({ default: false })
             :class="{ 'is-on': model }"
             @click="model = !model"
         >
-            <span /></button
-    ></label>
+            <span />
+        </button>
+    </label>
 </template>
 
 <style scoped>
@@ -26,6 +29,12 @@ const model = defineModel<boolean>({ default: false })
     justify-content: space-between;
     gap: 12px;
     font-size: var(--h-switch-font-size, 12px);
+}
+.h-switch-label__content {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
 }
 .h-switch {
     position: relative;

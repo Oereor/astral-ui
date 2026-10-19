@@ -23,3 +23,9 @@
 | `--h-scrollbar-gap`   | 滚动条间距 |
 
 动画遵循系统的减少动态效果设置。设置 `document.documentElement.dataset.hMotion = 'reduced'` 可关闭动画。
+
+## 隔离主题
+
+`scoped-theme.css` 仅影响 `.h-theme` 根及其后代，选择器使用 `:where`
+保持低优先级，避免覆盖组件样式。不要同时导入默认入口的全局 `theme.css`。
+局部主题不附带字体文件；可在有授权字体时自行加载 Astral 字体。

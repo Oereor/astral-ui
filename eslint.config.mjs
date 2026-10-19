@@ -6,7 +6,7 @@ import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
 export default withVueTs(
     {
-        ignores: ['dist/**', 'reference/**', 'tests/**', 'node_modules/**'],
+        ignores: ['dist/**', 'reference/**', 'node_modules/**'],
     },
     {
         files: ['**/*.{js,mjs,ts,vue}'],

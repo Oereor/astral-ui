@@ -7,7 +7,12 @@ export interface TabItem {
     iconSrc?: string
     disabled?: boolean
 }
-defineProps<{ items: TabItem[]; label?: string; variant?: 'line' | 'pill' | 'icon' }>()
+defineProps<{
+    items: TabItem[]
+    label?: string
+    idPrefix?: string
+    variant?: 'line' | 'pill' | 'icon'
+}>()
 const orbitDots = Array.from({ length: 80 }, (_, index) => {
     const angle = (index / 80) * Math.PI * 2
     const distance = Math.min(index % 40, 40 - (index % 40))
@@ -48,8 +53,10 @@ function move(event: KeyboardEvent) {
     >
         <button
             v-for="(item, index) in items"
+            :id="idPrefix ? `${idPrefix}-tab-${item.value}` : undefined"
             :key="item.value"
             role="tab"
+            :aria-controls="idPrefix ? `${idPrefix}-panel-${item.value}` : undefined"
             type="button"
             :aria-selected="model === item.value"
             :aria-label="variant === 'icon' ? item.label : undefined"

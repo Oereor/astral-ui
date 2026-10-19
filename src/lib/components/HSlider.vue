@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, useId, type InputHTMLAttributes } from 'vue'
 import HIcon from './HIcon.vue'
 const props = withDefaults(
     defineProps<{
@@ -9,11 +9,24 @@ const props = withDefaults(
         step?: number
         disabled?: boolean
         controls?: boolean
+        decrementLabel?: string
+        incrementLabel?: string
+        inputId?: string
+        inputAttrs?: InputHTMLAttributes
     }>(),
-    { min: 0, max: 100, step: 1 },
+    {
+        min: 0,
+        max: 100,
+        step: 1,
+        decrementLabel: '',
+        incrementLabel: '',
+        inputId: '',
+        inputAttrs: () => ({}),
+    },
 )
 const model = defineModel<number>({ default: 0 })
-const id = `h-slider-${useId()}`
+const generatedId = `h-slider-${useId()}`
+const id = computed(() => props.inputId || generatedId)
 const percent = computed(() =>
     Math.max(0, Math.min(100, ((model.value - props.min) / (props.max - props.min || 1)) * 100)),
 )
@@ -35,7 +48,7 @@ function adjust(direction: number) {
                 v-if="controls"
                 type="button"
                 class="h-slider__step"
-                :aria-label="`减少${label}`"
+                :aria-label="decrementLabel || `减少${label}`"
                 :disabled="disabled || model <= min"
                 @click="adjust(-1)"
             >
@@ -45,6 +58,7 @@ function adjust(direction: number) {
             <div class="h-slider__control" :style="{ '--fill': `${percent}%` }">
                 <span class="h-slider__track" aria-hidden="true"><span /></span>
                 <input
+                    v-bind="inputAttrs"
                     :id="id"
                     v-model.number="model"
                     type="range"
@@ -60,7 +74,7 @@ function adjust(direction: number) {
                 v-if="controls"
                 type="button"
                 class="h-slider__step"
-                :aria-label="`增加${label}`"
+                :aria-label="incrementLabel || `增加${label}`"
                 :disabled="disabled || model >= max"
                 @click="adjust(1)"
             >

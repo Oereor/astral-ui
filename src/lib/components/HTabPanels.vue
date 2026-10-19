@@ -7,8 +7,10 @@ const props = withDefaults(
         order: string[]
         axis?: 'x' | 'y'
         animateHeight?: boolean
+        animated?: boolean
+        idPrefix?: string
     }>(),
-    { axis: 'x', animateHeight: true },
+    { axis: 'x', animateHeight: true, animated: true, idPrefix: '' },
 )
 const emit = defineEmits<{ display: [value: string] }>()
 const container = ref<HTMLElement>()
@@ -76,7 +78,12 @@ watch(
         const currentRevision = ++revision
         const root = container.value
         const oldPanel = panel.value
-        if (!root || !oldPanel) return
+        if (!root || !oldPanel || !props.animated) {
+            freeze()
+            displayedValue.value = target
+            settle()
+            return
+        }
         const startHeight = root.getBoundingClientRect().height
         freeze()
         if (reducedMotion()) {
@@ -148,9 +155,13 @@ onBeforeUnmount(() => {
 <template>
     <div ref="container" class="h-tab-panels" :class="{ 'is-moving': moving }">
         <div
+            :id="idPrefix ? `${idPrefix}-panel-${displayedValue}` : undefined"
             :key="displayedValue"
             ref="panel"
             class="h-tab-panels__page"
+            :role="idPrefix ? 'tabpanel' : undefined"
+            :aria-labelledby="idPrefix ? `${idPrefix}-tab-${displayedValue}` : undefined"
+            :tabindex="idPrefix ? 0 : undefined"
             :style="{ opacity: concealed ? 0 : undefined }"
         >
             <slot :value="displayedValue" />

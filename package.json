@@ -12,7 +12,8 @@
         "format": "prettier --write .",
         "format:check": "prettier --check .",
         "check": "npm run lint && npm run format:check && npm run build",
-        "build:example": "vue-tsc --noEmit && vite build --mode example"
+        "build:example": "vue-tsc --noEmit && vite build --mode example",
+        "test": "vitest run"
     },
     "dependencies": {
         "vue": "^3.5.22"
@@ -28,6 +29,17 @@
         "prettier": "^3.9.10",
         "typescript": "~5.9.3",
         "vite": "^7.1.10",
-        "vue-tsc": "^3.1.1"
-    }
+        "vue-tsc": "^3.1.1",
+        "vitest": "4.1.11"
+    },
+    "exports": {
+        ".": "./src/lib/index.ts",
+        "./components": "./src/lib/components.ts",
+        "./scoped-theme.css": "./src/lib/scoped-theme.css"
+    },
+    "files": [
+        "src/lib",
+        "README.md",
+        "docs"
+    ]
 }
